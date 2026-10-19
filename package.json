@@ -10,7 +10,7 @@
   "bugs": { "url": "https://github.com/maharshi365/snipix/issues" },
   "type": "module",
   "bin": {
-    "snipix": "bin/snipix.cjs"
+    "snipix": "src/cli/index.ts"
   },
   "scripts": {
     "build": "bun scripts/build.ts",
@@ -19,12 +19,10 @@
     "typecheck": "tsc --noEmit",
     "setup": "bun run build",
     "test:executable": "bun scripts/test-executable.ts",
-    "package": "bun scripts/package.ts",
-    "test:package": "bun scripts/test-package.ts",
     "notices": "bun scripts/notices.ts",
-    "publish:patch": "bun scripts/publish.ts patch",
-    "publish:minor": "bun scripts/publish.ts minor",
-    "publish:major": "bun scripts/publish.ts major"
+    "release:patch": "bun scripts/release.ts patch",
+    "release:minor": "bun scripts/release.ts minor",
+    "release:major": "bun scripts/release.ts major"
   },
   "dependencies": {
     "@astral-sh/ruff-wasm-web": "^0.17.1",

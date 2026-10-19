@@ -38,7 +38,7 @@ export async function generateNotices() {
     visited.add(key);
     const notices = (await readdir(directory)).filter((file) => /^(licen[sc]e|notice|copying)(\..*)?$/i.test(file)).sort();
     const texts = await Promise.all(notices.map((file) => Bun.file(join(directory, file)).text()));
-    sections.push(`${key}\nLicense: ${metadata.license ?? "See package source"}\nSource: ${typeof metadata.repository === "string" ? metadata.repository : metadata.repository?.url ?? metadata.homepage ?? "npm registry"}\n\n${texts.join("\n\n") || "See source URL for license text."}`);
+    sections.push(`${key}\nLicense: ${metadata.license ?? "See package source"}\nSource: ${typeof metadata.repository === "string" ? metadata.repository : metadata.repository?.url ?? metadata.homepage ?? "See upstream package metadata"}\n\n${texts.join("\n\n") || "See source URL for license text."}`);
     for (const child of Object.keys(metadata.dependencies ?? {}).sort()) await visit(child, directory);
   }
   for (const name of Object.keys(project.dependencies).sort()) await visit(name, process.cwd());

@@ -12,21 +12,16 @@ Node, browser, installed fonts, extraction step, or downloads are needed to run 
 
 ## Install
 
-After the first npm publication:
-
-```sh
-npm install -g snipix
-snipix app.ts -o app.png --theme breeze --line-numbers
-```
-
-Or run `npx snipix app.ts -o app.png`. npm requires Node.js 20+ and installs
-only the executable for your platform. There are no postinstall scripts.
+Download the executable for your OS/CPU from
+[GitHub Releases](https://github.com/maharshi365/snipix/releases).
 Supported platforms: Windows/macOS/Linux, x64/arm64, with glibc and musl Linux
-builds. Keep npm optional dependencies enabled.
+builds. No runtime installation is required.
 
-Standalone executables are also published to
-[GitHub Releases](https://github.com/maharshi365/snipix/releases). They do not
-need Node.js or npm.
+On Windows:
+
+```powershell
+.\snipix-win32-x64.exe app.ts -o app.png --theme breeze --line-numbers
+```
 
 On Linux/macOS, make the downloaded file executable before running it:
 
@@ -68,7 +63,7 @@ be tested on their target OS. Windows x64 is tested here. Standard OS runtime
 requirements for Bun still apply.
 
 To run from source instead, use `bun run start` or run `bun link` to expose
-the `snipix` command after a local build. Source mode only needs `bun install`; no renderer
+the `snipix` command through Bun. Source mode only needs `bun install`; no renderer
 build or browser setup is required.
 
 ## Examples
@@ -190,7 +185,6 @@ src/render/    glyph outlines, wrapping, native SVG, colors, backgrounds
 src/export/    SVG bytes and resvg WASM PNG rendering
 vendor/ray-so/ upstream references, grammars, assets, license and source commit
 scripts/       executable build, isolated smoke test, upstream import
-bin/           zero-dependency Node launcher for npm installations
 tests/         validation, layout, CLI and real PNG/SVG tests
 ```
 
@@ -221,8 +215,6 @@ bun run typecheck
 bun test
 bun run build
 bun run test:executable
-bun run package
-bun run test:package
 ```
 
 `test:executable` copies only the executable into a new empty temporary folder
@@ -230,36 +222,24 @@ and runs it with an empty `PATH`. It checks TypeScript/Python formatting,
 Cedar/Tailwind, PNG/WASM, embedded image assets, SVG, stdin, and help. It also
 checks that no runtime assets were extracted beside the executable.
 
-`test:package` packs the npm manifests, checks the shipped file list, installs
-local tarballs offline, and runs the installed Node launcher. The root workspace
-is private to prevent accidental publication of source dependencies. Publishable
-packages are generated under `dist/npm/`.
+## Releases
 
-## Publishing
-
-Commit your work and log in once with `npm login`. Then run one command:
+Commit your work and sign in to GitHub CLI with `gh auth login`. Then run:
 
 ```sh
-bun run publish:patch
-# or: bun run publish:minor
-# or: bun run publish:major
+bun run release:patch
+# or: bun run release:minor
+# or: bun run release:major
 ```
 
-The script checks a clean Git tree and npm login before changing the version.
-It bumps the version, runs checks, cross-compiles eight executables, stages the
-npm packages, and tests the local installation. It publishes the platform
-packages first and `snipix` last, then commits the version, creates an annotated
-`vX.Y.Z` tag, and pushes to GitHub. Tag pushes attach standalone executables
-to a GitHub release. npm may prompt for 2FA depending on your account settings.
+The script checks a clean Git tree and GitHub login, runs checks, bumps the
+version, builds the local executable, and runs the standalone smoke test. It
+then commits the version, creates an annotated `vX.Y.Z` tag, and pushes to
+GitHub. The release workflow builds eight executables and publishes them with
+`SHA256SUMS` to GitHub Releases.
 
-The first run may download Bun cross-compilation toolchains. `dist/`, binaries,
-tarballs, credentials, and local caches are excluded from Git. npm packages use
-explicit file allowlists. No credentials are stored in the repo.
-
-If publishing fails partway through, keep the attempted version and inspect
-the error; already-published npm versions cannot be overwritten. Retry only the
-remaining staged packages with `npm publish dist/npm/<package> --access public`,
-then commit/tag that version. Do not bump again merely to retry a network error.
+`dist/`, binaries, archives, credentials, and local caches are excluded from
+Git. No credentials are stored in the repo.
 
 ## Attribution
 
@@ -268,8 +248,8 @@ This is not an official Raycast product. Fontsource fonts retain their
 respective package licenses. `resvg` WASM is MPL-2.0; its source is available
 at https://github.com/yisibl/resvg-js. Other dependencies retain their own
 licenses.
-`snipix licenses` prints the bundled notices. Generated notices are also included
-in every npm package. The native `resvg` sources are unmodified and available at
+`snipix licenses` prints the notices bundled into the executable.
+The native `resvg` sources are unmodified and available at
 the URL stated in those notices.
 Generated license bundles and vendor license copies are not committed. Builds
 collect dependency licenses and fetch/cache the resvg license when needed.

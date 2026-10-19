@@ -3,7 +3,7 @@ node_modules/
 .npm/
 .bun/
 
-# Generated executables, npm staging directories, and release archives.
+# Generated executables and release archives.
 dist/
 build/
 *.exe
