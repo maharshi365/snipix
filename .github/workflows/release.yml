@@ -45,6 +45,9 @@ jobs:
         with:
           path: release
           merge-multiple: true
+      - name: Generate checksums
+        working-directory: release
+        run: sha256sum snipix-* > SHA256SUMS
       - run: gh release create "$GITHUB_REF_NAME" release/* --repo "$GITHUB_REPOSITORY" --generate-notes --verify-tag
         env:
           GH_TOKEN: ${{ github.token }}

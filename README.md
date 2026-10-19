@@ -28,6 +28,15 @@ Standalone executables are also published to
 [GitHub Releases](https://github.com/maharshi365/snipix/releases). They do not
 need Node.js or npm.
 
+On Linux/macOS, make the downloaded file executable before running it:
+
+```sh
+chmod +x ./snipix-linux-x64
+./snipix-linux-x64 --help
+```
+
+Choose the filename for your OS/CPU. Releases include `SHA256SUMS` to verify downloads.
+
 ## Build a single executable
 
 Install [Bun](https://bun.sh), then run:
