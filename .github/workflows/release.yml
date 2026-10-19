@@ -1,0 +1,50 @@
+name: Standalone release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { id: win32-x64, target: bun-windows-x64, os: windows-latest, suffix: .exe }
+          - { id: win32-arm64, target: bun-windows-arm64, os: windows-latest, suffix: .exe }
+          - { id: darwin-x64, target: bun-darwin-x64, os: macos-latest, suffix: "" }
+          - { id: darwin-arm64, target: bun-darwin-arm64, os: macos-latest, suffix: "" }
+          - { id: linux-x64, target: bun-linux-x64, os: ubuntu-latest, suffix: "" }
+          - { id: linux-arm64, target: bun-linux-arm64, os: ubuntu-latest, suffix: "" }
+          - { id: linux-x64-musl, target: bun-linux-x64-musl, os: ubuntu-latest, suffix: "" }
+          - { id: linux-arm64-musl, target: bun-linux-arm64-musl, os: ubuntu-latest, suffix: "" }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.3
+      - run: bun install --frozen-lockfile
+      - name: Check tag matches package version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: bun -e 'import p from "./package.json"; if (process.env.GITHUB_REF_NAME !== `v${p.version}`) throw new Error("Tag/version mismatch")'
+      - run: bun run build --target ${{ matrix.target }} --outfile dist/snipix-${{ matrix.id }}${{ matrix.suffix }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: snipix-${{ matrix.id }}
+          path: dist/snipix-${{ matrix.id }}${{ matrix.suffix }}
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
+      - run: gh release create "$GITHUB_REF_NAME" release/* --repo "$GITHUB_REPOSITORY" --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }}

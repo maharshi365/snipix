@@ -1,0 +1,40 @@
+# Dependencies and package-manager caches. Commit bun.lock.
+node_modules/
+.npm/
+.bun/
+
+# Generated executables, npm staging directories, and release archives.
+dist/
+build/
+*.exe
+*.tgz
+*.zip
+*.tar.gz
+
+# License bundles are generated for distributions, not committed.
+THIRD_PARTY_NOTICES.txt
+vendor/licenses/
+vendor/**/LICENSE*
+
+# Test output and compiler/tool caches.
+test-output/
+coverage/
+.cache/
+*.tsbuildinfo
+*.tmp
+*.log
+
+# Local credentials and environment files.
+.npmrc
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Editor and OS files.
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo

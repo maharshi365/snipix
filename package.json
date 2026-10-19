@@ -1,0 +1,57 @@
+{
+  "name": "snipix",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Beautiful code images from your terminal. No browser required.",
+  "license": "MIT",
+  "author": "maharshi365",
+  "repository": { "type": "git", "url": "git+https://github.com/maharshi365/snipix.git" },
+  "homepage": "https://github.com/maharshi365/snipix#readme",
+  "bugs": { "url": "https://github.com/maharshi365/snipix/issues" },
+  "type": "module",
+  "bin": {
+    "snipix": "bin/snipix.cjs"
+  },
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "start": "bun src/cli/index.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "setup": "bun run build",
+    "test:executable": "bun scripts/test-executable.ts",
+    "package": "bun scripts/package.ts",
+    "test:package": "bun scripts/test-package.ts",
+    "notices": "bun scripts/notices.ts",
+    "publish:patch": "bun scripts/publish.ts patch",
+    "publish:minor": "bun scripts/publish.ts minor",
+    "publish:major": "bun scripts/publish.ts major"
+  },
+  "dependencies": {
+    "@astral-sh/ruff-wasm-web": "^0.17.1",
+    "@fontsource/commit-mono": "^5.2.0",
+    "@fontsource/fira-code": "^5.2.0",
+    "@fontsource/geist-mono": "^5.2.0",
+    "@fontsource/google-sans-code": "^5.2.0",
+    "@fontsource/ibm-plex-mono": "^5.2.0",
+    "@fontsource/inter": "^5.2.0",
+    "@fontsource/jetbrains-mono": "^5.2.0",
+    "@fontsource/roboto-mono": "^5.2.0",
+    "@fontsource/source-code-pro": "^5.2.0",
+    "@fontsource/space-mono": "^5.2.0",
+    "@resvg/resvg-wasm": "^2.6.2",
+    "commander": "^14.0.0",
+    "culori": "^4.0.2",
+    "highlight.js": "^11.11.1",
+    "opentype.js": "^2.0.0",
+    "prettier": "^3.6.0",
+    "shiki": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/culori": "^4.0.1",
+    "@types/opentype.js": "^1.3.10",
+    "@types/pngjs": "^6.0.5",
+    "pngjs": "^7.0.0",
+    "typescript": "^5.9.0"
+  }
+}
